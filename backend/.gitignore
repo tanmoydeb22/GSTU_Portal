@@ -1,0 +1,42 @@
+# Environment variables — NEVER commit
+.env
+.env.local
+.env.production
+.env.development
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Uploaded files (student photos, PDFs, ID cards)
+uploads/
+public/uploads/
+src/uploads/
+
+# Generated files
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Database backup files
+*.sql.backup
+*.dump
+
+# PM2 / deployment
+ecosystem.config.js
+.pm2/
