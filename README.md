@@ -107,11 +107,11 @@ npm run dev
 
 ---
 
-## 🔑 Default Credentials
+## 🔑 System Access
 
-Once the system is running and the database is seeded, you can log in using the following test accounts:
+Once the system is running and the database is seeded, an initial System Admin account will be created automatically. 
 
-- **System Admin:** `admin@gstuportal.com` / `Admin@1234`
+- **System Admin:** *Please refer to your secure documentation for the initial login credentials.*
 - **Section Officer:** *Log in as Admin to create a Section Officer account.*
 - **Teacher:** *Log in as Admin or Section Officer to create a Teacher account.*
 - **Student:** *Log in as a Section Officer to bulk upload or manually create Student accounts.*
