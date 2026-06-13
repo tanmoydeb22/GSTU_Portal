@@ -442,8 +442,9 @@ async function createCourse(req, res, next) {
 
 async function updateCourse(req, res, next) {
   try {
-    const { course_name, credit, offered_level, offered_term, course_type, description, dept_id } = req.body;
+    const { course_code, course_name, credit, offered_level, offered_term, course_type, description, dept_id } = req.body;
     const f = [], p = [];
+    if (course_code !== undefined) { f.push('course_code=?'); p.push(course_code); }
     if (course_name !== undefined) { f.push('course_name=?'); p.push(course_name); }
     if (credit !== undefined) { f.push('credit=?'); p.push(credit); }
     if (offered_level !== undefined) { f.push('offered_level=?'); p.push(offered_level); }
@@ -458,7 +459,10 @@ async function updateCourse(req, res, next) {
     const [r] = await pool.query(`UPDATE course SET ${f.join(',')} WHERE course_id=?`, p);
     if (r.affectedRows === 0) return notFound(res);
     return success(res, null, 'Course updated');
-  } catch (err) { next(err); }
+  } catch (err) { 
+    if (err.code === 'ER_DUP_ENTRY') return badRequest(res, 'Course code exists'); 
+    next(err); 
+  }
 }
 
 async function deleteCourse(req, res, next) {
