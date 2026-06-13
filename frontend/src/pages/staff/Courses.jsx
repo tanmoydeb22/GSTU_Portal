@@ -168,7 +168,7 @@ export default function Courses() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input label="Course Code" value={form.course_code} onChange={e => setForm({...form, course_code: e.target.value})} placeholder="e.g. CSE-1101" required />
             <Input label="Course Name" value={form.course_name} onChange={e => setForm({...form, course_name: e.target.value})} placeholder="e.g. Structured Programming" required />
-            <Input label="Credit" type="number" step="0.5" min="0.5" max="10" value={form.credit} onChange={e => setForm({...form, credit: parseFloat(e.target.value)})} required />
+            <Input label="Credit" type="number" step="0.25" min="0.25" max="10" value={form.credit} onChange={e => setForm({...form, credit: parseFloat(e.target.value)})} required />
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Type</label>
