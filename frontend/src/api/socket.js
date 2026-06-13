@@ -28,7 +28,11 @@ export function getSocket() {
 
   const userId = resolveUserId(user, role);
 
-  socket = io('http://localhost:5001', {
+  const backendUrl = import.meta.env.VITE_API_URL 
+    ? import.meta.env.VITE_API_URL.replace(/\/api$/, '') 
+    : 'http://localhost:5001';
+
+  socket = io(backendUrl, {
     auth: { token: accessToken },
     query: { userId, role, deptId: user.dept_id || null },
     transports: ['websocket', 'polling'],
