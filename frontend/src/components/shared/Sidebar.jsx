@@ -33,7 +33,15 @@ export default function Sidebar({ items, title = 'GSTU Portal' }) {
 
   return (
     <>
-      <aside className="no-print hidden lg:flex fixed top-0 left-0 z-50 h-full bg-white border-r border-brand-100 shadow-sm w-64 flex-col lg:static lg:z-0">
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
+          onClick={toggleSidebar}
+        />
+      )}
+
+      <aside className={`no-print ${sidebarOpen ? 'flex' : 'hidden'} lg:flex fixed top-0 left-0 z-50 h-full bg-white border-r border-brand-100 shadow-sm w-64 flex-col lg:static lg:z-0`}>
 
         {/* Logo area */}
         <div className="relative py-4 px-5 bg-gradient-to-br from-green-500 via-green-600 to-emerald-600 rounded-br-3xl shadow-md mb-3">

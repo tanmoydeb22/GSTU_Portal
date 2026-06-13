@@ -70,6 +70,12 @@ export default function Header() {
         
         {/* Left Side: Dynamic Section Title */}
         <div className="flex items-center gap-2 min-w-0">
+          <button 
+            onClick={toggleSidebar}
+            className="lg:hidden p-2 -ml-2 rounded-xl text-gray-600 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
           <div className="text-left min-w-0">
             <p className="text-[10px] font-bold text-gray-400 lg:text-brand-600 uppercase tracking-wide lg:tracking-widest leading-none mb-0.5 lg:mb-1">
               {getWorkspaceName()}
