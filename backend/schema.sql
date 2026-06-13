@@ -16,12 +16,16 @@ CREATE TABLE admin (
   name       VARCHAR(120) NOT NULL,
   email      VARCHAR(150) NOT NULL,
   password   VARCHAR(255) NOT NULL,
+  role       VARCHAR(20)  NOT NULL DEFAULT 'super_admin',
+  created_by INT          DEFAULT NULL,
+  must_change_password TINYINT(1) NOT NULL DEFAULT 0,
   is_active  TINYINT(1)   NOT NULL DEFAULT 1,
   login_attempts INT DEFAULT 0,
   locked_until TIMESTAMP NULL DEFAULT NULL,
   created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (admin_id),
-  UNIQUE KEY uq_admin_email (email)
+  UNIQUE KEY uq_admin_email (email),
+  CONSTRAINT fk_admin_created_by FOREIGN KEY (created_by) REFERENCES admin(admin_id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- TABLE 3: dept_staff
