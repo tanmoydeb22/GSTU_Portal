@@ -410,9 +410,9 @@ async function getCourses(req, res, next) {
     const p = [];
 
     // Filter out Viva courses unless specifically requested
-    if (includeViva !== 'true') {
-      q += ' AND course_type != "Viva"';
-    }
+      if (!includeViva || includeViva !== 'true') {
+        q += " AND course_type != 'Viva'";
+      }
 
     // Default: only show department's own courses
     if (all !== 'true') {
@@ -532,13 +532,6 @@ async function createSemester(req, res, next) {
     const [r] = await connection.query(`INSERT INTO semester (academic_year,level,term,reg_start,reg_end,dept_id,is_active) VALUES(?,?,?,?,?,?,0)`,
       [academic_year, level, term, reg_start, reg_end, req.user.deptId]);
 
-    // Automatically create Viva offering if a Viva course exists for this specific level/term
-    const [vivaCourse] = await connection.query('SELECT course_id FROM course WHERE dept_id = ? AND offered_level = ? AND offered_term = ? AND course_type = \'Viva\'', [req.user.deptId, level, term]);
-    
-    if (vivaCourse.length > 0) {
-      await connection.query('INSERT IGNORE INTO course_offering (course_id, semester_id) VALUES (?, ?)', [vivaCourse[0].course_id, r.insertId]);
-    }
-
     await connection.commit();
     return created(res, { semester_id: r.insertId });
   } catch (err) { 
@@ -593,7 +586,7 @@ async function deleteSemester(req, res, next) {
       return badRequest(res, 'Cannot delete semester because it already has active student enrollments');
     }
 
-    // Delete any course offerings first (including auto-generated Viva course offerings) since there are no enrollments
+    // Delete any course offerings first since there are no enrollments
     await pool.query('DELETE FROM course_offering WHERE semester_id = ?', [semesterId]);
 
     const [r] = await pool.query('DELETE FROM semester WHERE semester_id=? AND dept_id=?', [semesterId, deptId]);

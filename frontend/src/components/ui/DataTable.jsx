@@ -24,7 +24,7 @@ export default function DataTable({ columns, data, searchable = true, pageSize =
         </div>
       )}
 
-      <div className="overflow-hidden rounded-2xl border border-gray-200/80 shadow-card bg-white">
+      <div className="overflow-x-auto overflow-y-hidden rounded-2xl border border-gray-200/80 shadow-card bg-white">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-gradient-to-r from-brand-600 to-brand-500">

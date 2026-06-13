@@ -136,7 +136,7 @@ export default function Courses() {
                                 <p className="text-[11px] text-gray-500 font-medium">Credits: {course.credit}</p>
                               </div>
                               
-                              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <div className="flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                                 <button 
                                   onClick={() => { setEditing(course); setForm(course); setModal(true); }}
                                   className="p-1.5 text-gray-400 hover:text-brand-600 hover:bg-white rounded-lg transition-colors"

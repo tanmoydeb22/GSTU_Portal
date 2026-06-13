@@ -579,7 +579,7 @@ async function enrollRetake(req, res, next) {
     `, [studentId, course_id]);
 
     // Check not already registered
-    const [existing] = await pool.query('SELECT enrollment_id FROM enrollment WHERE student_id=? AND offering_id=? AND status="Registered"', [studentId, offering[0].offering_id]);
+    const [existing] = await pool.query("SELECT enrollment_id FROM enrollment WHERE student_id=? AND offering_id=? AND status='Registered'", [studentId, offering[0].offering_id]);
     if (existing.length) return badRequest(res, 'Already registered for this course');
 
     // Register (using the student's current level/term to record when they took it)
@@ -656,7 +656,7 @@ async function enrollImprove(req, res, next) {
       WHERE e.student_id = ? AND co.course_id = ?
     `, [studentId, course_id]);
 
-    const [existing] = await pool.query('SELECT enrollment_id FROM enrollment WHERE student_id=? AND offering_id=? AND status="Registered"', [studentId, offering[0].offering_id]);
+    const [existing] = await pool.query("SELECT enrollment_id FROM enrollment WHERE student_id=? AND offering_id=? AND status='Registered'", [studentId, offering[0].offering_id]);
     if (existing.length) return badRequest(res, 'Already registered');
 
     const [r] = await pool.query(`
