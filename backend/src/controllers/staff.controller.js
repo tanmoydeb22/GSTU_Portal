@@ -523,21 +523,30 @@ async function getSemesters(req, res, next) {
 }
 
 async function createSemester(req, res, next) {
+  const connection = await pool.getConnection();
   try {
     const { academic_year, level, term, reg_start, reg_end } = req.body;
-    const [r] = await pool.query(`INSERT INTO semester (academic_year,level,term,reg_start,reg_end,dept_id,is_active) VALUES(?,?,?,?,?,?,0)`,
+    
+    await connection.beginTransaction();
+
+    const [r] = await connection.query(`INSERT INTO semester (academic_year,level,term,reg_start,reg_end,dept_id,is_active) VALUES(?,?,?,?,?,?,0)`,
       [academic_year, level, term, reg_start, reg_end, req.user.deptId]);
 
     // Automatically create Viva offering if a Viva course exists for this specific level/term
-    const [vivaCourse] = await pool.query('SELECT course_id FROM course WHERE dept_id = ? AND offered_level = ? AND offered_term = ? AND course_type = "Viva"', [req.user.deptId, level, term]);
+    const [vivaCourse] = await connection.query('SELECT course_id FROM course WHERE dept_id = ? AND offered_level = ? AND offered_term = ? AND course_type = \'Viva\'', [req.user.deptId, level, term]);
+    
     if (vivaCourse.length > 0) {
-      await pool.query('INSERT IGNORE INTO course_offering (course_id, semester_id) VALUES (?, ?)', [vivaCourse[0].course_id, r.insertId]);
+      await connection.query('INSERT IGNORE INTO course_offering (course_id, semester_id) VALUES (?, ?)', [vivaCourse[0].course_id, r.insertId]);
     }
 
+    await connection.commit();
     return created(res, { semester_id: r.insertId });
   } catch (err) { 
+    await connection.rollback();
     if (err.code === 'ER_DUP_ENTRY') return badRequest(res, 'A semester with this year, level, and term already exists');
     next(err); 
+  } finally {
+    connection.release();
   }
 }
 
