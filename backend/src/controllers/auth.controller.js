@@ -276,6 +276,7 @@ async function refresh(req, res, next) {
       sessionId: decoded.sessionId,
       userId: decoded.userId,
       role: decoded.role,
+      adminRole: decoded.adminRole,
       deptId: decoded.deptId,
       name: decoded.name,
     };
