@@ -121,7 +121,7 @@ CREATE TABLE course (
   dept_id       INT          NOT NULL,
   offered_level TINYINT      NOT NULL,
   offered_term  TINYINT      NOT NULL,
-  course_type   ENUM('Theory','Lab','Project','Thesis') NOT NULL DEFAULT 'Theory',
+  course_type   ENUM('Theory','Lab','Project','Thesis','Viva') NOT NULL DEFAULT 'Theory',
   description   TEXT                  DEFAULT NULL,
   created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (course_id),
@@ -530,7 +530,7 @@ CREATE TABLE IF NOT EXISTS grading_scale (
 
 CREATE TABLE IF NOT EXISTS marks_config (
   config_id INT NOT NULL AUTO_INCREMENT,
-  course_type ENUM('Theory','Lab','Project','Thesis') NOT NULL,
+  course_type ENUM('Theory','Lab','Project','Thesis','Viva') NOT NULL,
   attendance_max INT NOT NULL DEFAULT 10,
   assignment_max INT NOT NULL DEFAULT 20,
   mid_max INT NOT NULL DEFAULT 30,
