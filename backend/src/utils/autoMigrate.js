@@ -6,18 +6,50 @@ async function autoMigrate() {
   try {
     console.log('Running auto-migrations...');
 
-    // 1. Add new columns to 'student' table
+    // 1. Run all CREATE TABLE statements from schema.sql first!
+    // This ensures that all base tables (like department, student) exist before altering them.
+    try {
+      const schemaPath = path.join(__dirname, '../../schema.sql');
+      let schemaSql = fs.readFileSync(schemaPath, 'utf8');
+      
+      // Inject IF NOT EXISTS into any CREATE TABLE that doesn't have it
+      schemaSql = schemaSql.replace(/CREATE TABLE\s+(?!IF NOT EXISTS)/gi, 'CREATE TABLE IF NOT EXISTS ');
+
+      // Split by ';' to execute them one by one.
+      const statements = schemaSql.split(';').map(s => s.trim()).filter(s => s.length > 0);
+      
+      for (const stmt of statements) {
+        if (stmt.toUpperCase().startsWith('CREATE TABLE')) {
+          try {
+            await pool.query(stmt);
+          } catch(err) {
+            console.error('Error executing table creation:', err.message);
+          }
+        } else if (stmt.toUpperCase().startsWith('CREATE INDEX')) {
+           try {
+            await pool.query(stmt);
+           } catch(err) {
+             // Ignore duplicate index errors
+           }
+        }
+      }
+      console.log('Checked and created all tables from schema.sql');
+    } catch (err) {
+      console.error('Failed to read or parse schema.sql:', err.message);
+    }
+
+    // 2. Add new columns to 'student' table
     const studentCols = [
-      { name: 'session', type: 'VARCHAR(12) NOT NULL DEFAULT ""' },
+      { name: 'session', type: "VARCHAR(12) NOT NULL DEFAULT ''" },
       { name: 'tour_completed', type: 'TINYINT(1) DEFAULT 0' },
       { name: 'permanent_address', type: 'TEXT DEFAULT NULL' },
       { name: 'guardian_name', type: 'VARCHAR(120) DEFAULT NULL' },
       { name: 'guardian_phone', type: 'VARCHAR(20) DEFAULT NULL' },
       { name: 'guardian_relation', type: 'VARCHAR(50) DEFAULT NULL' },
       { name: 'blood_group', type: 'VARCHAR(5) DEFAULT NULL' },
-      { name: 'student_status', type: 'VARCHAR(20) DEFAULT "Regular"' },
+      { name: 'student_status', type: "VARCHAR(20) DEFAULT 'Regular'" },
       { name: 'date_of_birth', type: 'DATE DEFAULT NULL' },
-      { name: 'degree', type: 'VARCHAR(100) DEFAULT "BSc. in Engg."' },
+      { name: 'degree', type: "VARCHAR(100) DEFAULT 'BSc. in Engg.'" },
       { name: 'hall_name', type: 'VARCHAR(100) DEFAULT NULL' },
       { name: 'id_issue_date', type: 'DATE DEFAULT NULL' },
       { name: 'id_expire_date', type: 'DATE DEFAULT NULL' }
@@ -34,9 +66,9 @@ async function autoMigrate() {
       }
     }
 
-    // 2. Add new columns to 'enrollment' table
+    // 3. Add new columns to 'enrollment' table
     const enrollmentCols = [
-      { name: 'enrollment_type', type: 'ENUM("Regular","Retake","Improvement") NOT NULL DEFAULT "Regular"' },
+      { name: 'enrollment_type', type: "ENUM('Regular','Retake','Improvement') NOT NULL DEFAULT 'Regular'" },
       { name: 'retake_of', type: 'INT DEFAULT NULL' },
       { name: 'attempt_number', type: 'TINYINT DEFAULT 1' },
       { name: 'is_published', type: 'TINYINT(1) NOT NULL DEFAULT 0' },
@@ -55,33 +87,10 @@ async function autoMigrate() {
       }
     }
 
-    // 3. Add course_type default to marks_config and course (just in case missing)
+    // 4. Add course_type default to marks_config and course (just in case missing)
     try {
       await pool.query(`ALTER TABLE course MODIFY COLUMN course_type ENUM('Theory', 'Lab', 'Project', 'Thesis', 'Viva') NOT NULL`);
     } catch(err) { /* ignore */ }
-
-    // 4. Run all CREATE TABLE IF NOT EXISTS from schema.sql
-    try {
-      const schemaPath = path.join(__dirname, '../../schema.sql');
-      const schemaSql = fs.readFileSync(schemaPath, 'utf8');
-      
-      // We will split by ';' to execute them one by one.
-      // But we only care about CREATE TABLE IF NOT EXISTS to avoid dropping existing data.
-      const statements = schemaSql.split(';').map(s => s.trim()).filter(s => s.length > 0);
-      
-      for (const stmt of statements) {
-        if (stmt.toUpperCase().startsWith('CREATE TABLE IF NOT EXISTS')) {
-          try {
-            await pool.query(stmt);
-          } catch(err) {
-            console.error('Error executing IF NOT EXISTS table creation:', err.message);
-          }
-        }
-      }
-      console.log('Checked and created all IF NOT EXISTS tables from schema.sql');
-    } catch (err) {
-      console.error('Failed to read or parse schema.sql:', err.message);
-    }
 
     // 5. Seed marks_config if empty
     try {
