@@ -22,6 +22,7 @@ const notificationRoutes = require('./routes/notification.routes');
 const noticeRoutes = require('./routes/notice.routes');
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy (e.g., Vercel)
 const server = http.createServer(app);
 
 // Initialize Socket.io (must come before routes so getIO() is available)
