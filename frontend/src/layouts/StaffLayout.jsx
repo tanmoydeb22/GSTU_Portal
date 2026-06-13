@@ -33,7 +33,13 @@ export default function StaffLayout() {
         <main className="flex-1 print:block overflow-y-auto overflow-x-hidden print:overflow-visible p-4 pb-20 lg:p-6 lg:pb-0 print:p-0 bg-transparent">
           <Outlet />
         </main>
-        <BottomNav items={navItems} />
+        <BottomNav items={[
+          navItems.find(i => i.path === '/staff/dashboard'),
+          navItems.find(i => i.path === '/staff/offerings'),
+          navItems.find(i => i.path === '/staff/payments'),
+          navItems.find(i => i.path === '/staff/reports'),
+          ...navItems.filter(i => !['/staff/dashboard', '/staff/offerings', '/staff/payments', '/staff/reports'].includes(i.path))
+        ]} />
       </div>
     </div>
   );
