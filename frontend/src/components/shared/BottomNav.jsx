@@ -20,18 +20,18 @@ export default function BottomNav({ items = [] }) {
         {mainTabs.map(tab => {
           const isActive = location.pathname.includes(tab.path);
           return (
-            <NavLink key={tab.path} to={tab.path} onClick={() => setMenuOpen(false)} className="flex flex-col items-center gap-1 relative w-12">
+            <NavLink key={tab.path} to={tab.path} onClick={() => setMenuOpen(false)} className="flex flex-1 flex-col items-center justify-center gap-1 relative min-w-[60px]">
               {isActive && <motion.div layoutId="bottom-nav-indicator" className="absolute -top-3 w-6 h-1 bg-brand-500 rounded-b-full" />}
               <tab.icon className={`w-6 h-6 transition-colors ${isActive ? 'text-brand-600' : 'text-gray-400'}`} />
-              <span className={`text-[10px] font-bold ${isActive ? 'text-brand-700' : 'text-gray-500'}`}>{tab.label}</span>
+              <span className={`text-[10px] font-bold text-center leading-[1.1] ${isActive ? 'text-brand-700' : 'text-gray-500'}`}>{tab.label}</span>
             </NavLink>
           );
         })}
         
-        <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center gap-1 relative w-12">
+        <button onClick={() => setMenuOpen(true)} className="flex flex-1 flex-col items-center justify-center gap-1 relative min-w-[60px]">
           {menuOpen && <motion.div layoutId="bottom-nav-indicator" className="absolute -top-3 w-6 h-1 bg-brand-500 rounded-b-full" />}
           <Menu className={`w-6 h-6 transition-colors ${menuOpen ? 'text-brand-600' : 'text-gray-400'}`} />
-          <span className={`text-[10px] font-bold ${menuOpen ? 'text-brand-700' : 'text-gray-500'}`}>Menu</span>
+          <span className={`text-[10px] font-bold text-center leading-[1.1] ${menuOpen ? 'text-brand-700' : 'text-gray-500'}`}>Menu</span>
         </button>
       </div>
 
