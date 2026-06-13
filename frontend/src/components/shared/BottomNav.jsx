@@ -21,7 +21,7 @@ export default function BottomNav({ items = [] }) {
           const isActive = location.pathname.includes(tab.path);
           return (
             <NavLink key={tab.path} to={tab.path} onClick={() => setMenuOpen(false)} className="flex flex-1 flex-col items-center justify-center gap-1 relative min-w-[60px]">
-              {isActive && <motion.div layoutId="bottom-nav-indicator" className="absolute -top-3 w-6 h-1 bg-brand-500 rounded-b-full" />}
+              {isActive && <motion.div layoutId="bottom-nav-indicator" className="absolute -top-2 w-8 h-1 bg-brand-500 rounded-b-full" />}
               <tab.icon className={`w-6 h-6 transition-colors ${isActive ? 'text-brand-600' : 'text-gray-400'}`} />
               <span className={`text-[10px] font-bold text-center leading-[1.1] ${isActive ? 'text-brand-700' : 'text-gray-500'}`}>{tab.label}</span>
             </NavLink>
@@ -29,7 +29,7 @@ export default function BottomNav({ items = [] }) {
         })}
         
         <button onClick={() => setMenuOpen(true)} className="flex flex-1 flex-col items-center justify-center gap-1 relative min-w-[60px]">
-          {menuOpen && <motion.div layoutId="bottom-nav-indicator" className="absolute -top-3 w-6 h-1 bg-brand-500 rounded-b-full" />}
+          {menuOpen && <motion.div layoutId="bottom-nav-indicator" className="absolute -top-2 w-8 h-1 bg-brand-500 rounded-b-full" />}
           <Menu className={`w-6 h-6 transition-colors ${menuOpen ? 'text-brand-600' : 'text-gray-400'}`} />
           <span className={`text-[10px] font-bold text-center leading-[1.1] ${menuOpen ? 'text-brand-700' : 'text-gray-500'}`}>Menu</span>
         </button>
