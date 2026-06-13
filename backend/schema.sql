@@ -396,9 +396,15 @@ CREATE TABLE IF NOT EXISTS notice (
   notice_id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(255) NOT NULL,
   content TEXT NOT NULL,
-  target_audience ENUM('All', 'Students', 'Teachers', 'Staff') NOT NULL DEFAULT 'All',
+  target_role VARCHAR(20) NOT NULL DEFAULT 'all',
+  target_dept INT DEFAULT NULL,
+  category VARCHAR(50) NOT NULL DEFAULT 'General',
+  is_pinned TINYINT(1) NOT NULL DEFAULT 0,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  attachment_url VARCHAR(255) DEFAULT NULL,
   published_by INT NOT NULL,
   published_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (notice_id)
 ) ENGINE=InnoDB;
 
