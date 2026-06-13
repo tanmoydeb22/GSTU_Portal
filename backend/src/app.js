@@ -66,7 +66,8 @@ const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use('/api', apiLimiter);
+  // Disable global API limiter because it blocks all users behind proxies with 429
+  // app.use('/api', apiLimiter);
 }
 
 // Routes
