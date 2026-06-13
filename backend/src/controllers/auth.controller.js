@@ -232,6 +232,7 @@ async function login(req, res, next) {
       user: {
         ...userData,
         role,
+        adminRole: role === 'admin' ? user.role : undefined,
         must_change_password: user.must_change_password === 1,
       },
     }, user.must_change_password === 1 ? 'Password change required' : 'Login successful');
@@ -483,7 +484,7 @@ async function me(req, res, next) {
     }
 
     const { password: _, ...userData } = rows[0];
-    return success(res, { ...userData, role });
+    return success(res, { ...userData, role, adminRole: role === 'admin' ? rows[0].role : undefined });
   } catch (err) {
     next(err);
   }
