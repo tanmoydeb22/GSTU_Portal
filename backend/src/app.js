@@ -10,6 +10,10 @@ const mongoSanitize = require('express-mongo-sanitize');
 const { apiLimiter } = require('./middleware/rateLimiter');
 const { errorHandler } = require('./middleware/errorHandler');
 const { initSocket } = require('./config/socket');
+const autoMigrate = require('./utils/autoMigrate');
+
+// Run auto-migrations on startup
+autoMigrate();
 
 // Route imports
 const authRoutes = require('./routes/auth.routes');
