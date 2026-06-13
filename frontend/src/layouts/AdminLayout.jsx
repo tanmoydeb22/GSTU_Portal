@@ -25,7 +25,13 @@ export default function AdminLayout() {
         <main className="flex-1 print:block overflow-y-auto overflow-x-hidden print:overflow-visible p-4 pb-20 lg:p-6 lg:pb-0 print:p-0 bg-transparent">
           <Outlet />
         </main>
-        <BottomNav items={navItems} />
+        <BottomNav items={[
+          navItems.find(i => i.path === '/admin/dashboard'),
+          navItems.find(i => i.path === '/admin/departments'),
+          navItems.find(i => i.path === '/admin/staff'),
+          navItems.find(i => i.path === '/admin/notifications'),
+          ...navItems.filter(i => !['/admin/dashboard', '/admin/departments', '/admin/staff', '/admin/notifications'].includes(i.path))
+        ]} />
       </div>
     </div>
   );
