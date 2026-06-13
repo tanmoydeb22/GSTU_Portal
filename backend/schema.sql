@@ -97,6 +97,10 @@ CREATE TABLE student (
   locked_until           TIMESTAMP             NULL DEFAULT NULL,
   is_active              TINYINT(1)   NOT NULL DEFAULT 1,
   must_change_password   TINYINT(1)   NOT NULL DEFAULT 1,
+  student_status         VARCHAR(20)  DEFAULT 'Regular',
+  photo_url              VARCHAR(255) DEFAULT NULL,
+  guardian_name          VARCHAR(120) DEFAULT NULL,
+  guardian_phone         VARCHAR(20)  DEFAULT NULL,
   created_at             TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (student_id),
   UNIQUE KEY uq_student_email (email),
@@ -450,6 +454,7 @@ CREATE TABLE IF NOT EXISTS login_history (
 CREATE TABLE IF NOT EXISTS fee_structure (
   fee_id          INT            NOT NULL AUTO_INCREMENT,
   dept_id         INT            NOT NULL,
+  academic_year   VARCHAR(20)    NOT NULL,
   level           TINYINT        NOT NULL,
   term            TINYINT        NOT NULL,
   base_amount     DECIMAL(10,2)  NOT NULL DEFAULT 0.00,
