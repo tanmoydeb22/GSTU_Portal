@@ -25,7 +25,7 @@ export default function StudentLayout() {
       <div className="flex-1 print:block flex flex-col overflow-hidden print:overflow-visible">
         <Header />
         <main className="flex-1 print:block overflow-y-auto overflow-x-hidden print:overflow-visible p-4 pb-20 lg:p-6 lg:pb-0 print:p-0 bg-transparent"><Outlet /></main>
-        <BottomNav />
+        <BottomNav items={navItems} />
       </div>
     </div>
   );

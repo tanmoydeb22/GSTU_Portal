@@ -2,27 +2,17 @@ import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { LayoutDashboard, BookOpen, Library, UserCircle, Menu, X, FileText, ClipboardList, RefreshCw, CreditCard, History, FileBarChart, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { LogOut } from 'lucide-react';
+import useAuthStore from '../../store/useAuthStore';
 
-const mainTabs = [
-  { path: '/student/dashboard', label: 'Home', icon: LayoutDashboard },
-  { path: '/student/registration', label: 'Register', icon: BookOpen },
-  { path: '/student/my-courses', label: 'Courses', icon: Library },
-  { path: '/student/profile', label: 'Profile', icon: UserCircle },
-];
-
-const moreTabs = [
-  { path: '/student/retake-improvement', label: 'Retake', icon: RefreshCw },
-  { path: '/student/payment', label: 'Payment', icon: CreditCard },
-  { path: '/student/payment/history', label: 'Transactions', icon: History },
-  { path: '/student/transcript', label: 'Transcript', icon: FileText },
-  { path: '/student/results/board', label: 'Results', icon: FileBarChart },
-  { path: '/student/notifications', label: 'Alerts', icon: Bell },
-  { path: '/student/notices', label: 'Notices', icon: ClipboardList },
-];
-
-export default function BottomNav() {
+export default function BottomNav({ items = [] }) {
+  const { logout } = useAuthStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+
+  // Pick first 4 items for main tabs, rest for more tabs menu
+  const mainTabs = items.slice(0, 4);
+  const moreTabs = items.slice(4);
 
   return (
     <>
@@ -79,6 +69,13 @@ export default function BottomNav() {
                   </NavLink>
                 );
               })}
+            </div>
+
+            <div className="mt-8">
+              <button onClick={logout} className="w-full flex items-center justify-center gap-2 p-4 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors shadow-sm border border-red-100">
+                <LogOut className="w-5 h-5" />
+                Log Out
+              </button>
             </div>
           </motion.div>
         )}

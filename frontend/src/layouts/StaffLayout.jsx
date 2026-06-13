@@ -22,13 +22,18 @@ const navItems = [
   { path: '/staff/notice-board', label: 'Notice Board', icon: ClipboardList },
 ];
 
+import BottomNav from '../components/shared/BottomNav';
+
 export default function StaffLayout() {
   return (
     <div className="flex print:block h-screen print:h-auto print:bg-white bg-brand-50 dot-grid">
       <Sidebar items={navItems} title="Section Officer" />
       <div className="flex-1 print:block flex flex-col overflow-hidden print:overflow-visible">
         <Header />
-        <main className="flex-1 print:block overflow-y-auto print:overflow-visible p-4 lg:p-6 print:p-0 bg-transparent"><Outlet /></main>
+        <main className="flex-1 print:block overflow-y-auto overflow-x-hidden print:overflow-visible p-4 pb-20 lg:p-6 lg:pb-0 print:p-0 bg-transparent">
+          <Outlet />
+        </main>
+        <BottomNav items={navItems} />
       </div>
     </div>
   );
