@@ -44,8 +44,7 @@ CREATE TABLE dept_staff (
   locked_until         TIMESTAMP    NULL DEFAULT NULL,
   is_active            TINYINT(1)   NOT NULL DEFAULT 1,
   must_change_password TINYINT(1)   NOT NULL DEFAULT 1,
-  login_attempts       INT          DEFAULT 0,
-  locked_until         TIMESTAMP    NULL DEFAULT NULL,
+
   created_at           TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (staff_id),
   UNIQUE KEY uq_staff_code  (staff_code),
