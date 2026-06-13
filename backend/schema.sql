@@ -1,9 +1,4 @@
-DROP DATABASE IF EXISTS gstuportal;
-CREATE DATABASE gstuportal
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE gstuportal;
+-- Database is provided by Aiven as 'defaultdb'
 
 -- TABLE 1: department
 CREATE TABLE department (
