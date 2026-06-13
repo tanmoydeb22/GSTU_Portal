@@ -64,6 +64,8 @@ router.put('/users/:role/:id', admin.updateGlobalUser);
 // Settings
 router.get('/settings/grading-scale', admin.getGradingScale);
 router.put('/settings/grading-scale', admin.updateGradingScale);
+router.get('/settings/grading', admin.getGradingScale); // Alias for cached frontends
+router.put('/settings/grading', admin.updateGradingScale); // Alias for cached frontends
 router.get('/settings/marks-config', admin.getMarksConfig);
 router.put('/settings/marks-config', admin.updateMarksConfig);
 
