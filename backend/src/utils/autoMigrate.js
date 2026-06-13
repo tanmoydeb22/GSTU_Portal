@@ -12,6 +12,9 @@ async function autoMigrate() {
       const schemaPath = path.join(__dirname, '../../schema.sql');
       let schemaSql = fs.readFileSync(schemaPath, 'utf8');
       
+      // Strip SQL comments so startsWith('CREATE TABLE') works
+      schemaSql = schemaSql.replace(/--.*$/gm, '');
+
       // Inject IF NOT EXISTS into any CREATE TABLE that doesn't have it
       schemaSql = schemaSql.replace(/CREATE TABLE\s+(?!IF NOT EXISTS)/gi, 'CREATE TABLE IF NOT EXISTS ');
 
